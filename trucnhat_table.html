@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch trực nhật</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+        table {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        #searchInput {
+            width: 60%;
+            margin: 20px auto;
+            padding: 10px;
+            font-size: 16px;
+            display: block;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Lịch trực nhật</h1>
+
+<input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Tìm kiếm tên của bạn hoặc ngày tháng...">
+
+<table>
+    <thead>
+        <tr>
+            <th>Thứ</th>
+            <th>Ngày</th>
+            <th>Cặp học sinh trực nhật</th>
+        </tr>
+    </thead>
+    <tbody id="scheduleTable">
+    </tbody>
+</table>
+
+<script>
+    const dayOfWeek = ["Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu"];
+    const studentPairs = [
+        ["Nguyễn Minh Ánh", "Huỳnh Lê Ngân Giang"],
+        ["Ngô Anh Thư", "Đặng Minh Ngân"],
+        ["Thầy Trường", "Lại Khánh Vân Lam"],
+        ["Lê Thanh Phương", "Võ Bảo Trân"],
+        ["Trương Khắc Ngọc Thạch", "Vũ Nguyễn Trúc Quân"],
+        ["Hồ Minh Khang", "Đặng Tấn Phát"],
+        ["Nguyễn Thế Gia Huy", "Vũ Đức Huyền"],
+        ["Nguyễn Công Minh Quang", "Phan Nguyễn Đăng Khoa"],
+        ["Đinh Thiện Nhân", "Trần Hoàng Bách"],
+        ["Trịnh Tuấn Hưng", "Nguyễn Ngọc Hân"],
+        ["Nguyễn Đình Thiên Phước", "Huỳnh Phúc Quang Tuấn"],
+        ["Hoàng Chân Như", "Nguyễn Lê Minh Duy"],
+        ["Thái Quang Khang", "Nguyễn Phạm Quang Vinh"],
+        ["Hà Quỳnh Hương", "Lê Minh Khôi"],
+        ["Đào Thảo Linh", "Lê Hồng Hạnh"],
+        ["Nguyễn Minh Khuê", "Trần Phạm Phương Linh"],
+        ["Huỳnh Trần Thạch Trúc", "Đỗ Như Xuân Hoàng"],
+        ["Huỳnh Trần Phúc Nguyên", "Nguyễn Tấn Tri"]
+    ];
+
+    let startDate = new Date("2024-09-16");
+    let endDate = new Date("2025-06-30");
+    let currentDate = new Date(startDate);
+    let schedule = [];
+
+    while (currentDate <= endDate) {
+        if (currentDate.getDay() >= 1 && currentDate.getDay() <= 5) {
+            // Assign cleaning pair and push to schedule
+            let pair = studentPairs.shift();
+            schedule.push({
+                date: currentDate.toLocaleDateString('vi-VN'),
+                pair: pair
+            });
+            studentPairs.push(pair);  // Re-append pair to end of list
+        }
+        currentDate.setDate(currentDate.getDate() + 1); // Move to next day
+    }
+
+    // Populate the table with schedule
+    let scheduleTable = document.getElementById("scheduleTable");
+    let dayIndex = 0;
+
+    schedule.forEach((entry, index) => {
+        let row = scheduleTable.insertRow();
+        let dayCell = row.insertCell(0);
+        let dateCell = row.insertCell(1);
+        let pairCell = row.insertCell(2);
+
+        dayCell.innerText = dayOfWeek[dayIndex];
+        dateCell.innerText = entry.date;
+        pairCell.innerText = entry.pair.join(" và ");
+
+        // Rotate days of the week
+        dayIndex++;
+        if (dayIndex > 4) dayIndex = 0;
+    });
+
+    function filterTable() {
+        let input = document.getElementById("searchInput");
+        let filter = input.value.toLowerCase();
+        let rows = scheduleTable.getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            let dateCell = rows[i].getElementsByTagName("td")[1];
+            let pairCell = rows[i].getElementsByTagName("td")[2];
+            if (dateCell || pairCell) {
+                let dateText = dateCell.textContent || dateCell.innerText;
+                let pairText = pairCell.textContent || pairCell.innerText;
+                if (dateText.toLowerCase().indexOf(filter) > -1 || pairText.toLowerCase().indexOf(filter) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }       
+        }
+    }
+</script>
+
+</body>
+</html>
