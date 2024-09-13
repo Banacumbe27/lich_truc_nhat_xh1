@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Duty</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        h1, h2 {
+            text-align: center;
+            margin: 10px 0;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Today's Cleaning Duty</h1>
+<h2 id="dutyStudents">Loading...</h2>
+
+<script>
+    const dayOfWeek = ["Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu"];
+    const studentPairs = [
+        ["Nguyễn Minh Ánh", "Huỳnh Lê Ngân Giang"],
+        ["Ngô Anh Thư", "Đặng Minh Ngân"],
+        ["Thầy Trường", "Lại Khánh Vân Lam"],
+        ["Lê Thanh Phương", "Võ Bảo Trân"],
+        ["Trương Khắc Ngọc Thạch", "Vũ Nguyễn Trúc Quân"],
+        ["Hồ Minh Khang", "Đặng Tấn Phát"],
+        ["Nguyễn Thế Gia Huy", "Vũ Đức Huyền"],
+        ["Nguyễn Công Minh Quang", "Phan Nguyễn Đăng Khoa"],
+        ["Đinh Thiện Nhân", "Trần Hoàng Bách"],
+        ["Trịnh Tuấn Hưng", "Nguyễn Ngọc Hân"],
+        ["Nguyễn Đình Thiên Phước", "Huỳnh Phúc Quang Tuấn"],
+        ["Hoàng Chân Như", "Nguyễn Lê Minh Duy"],
+        ["Thái Quang Khang", "Nguyễn Phạm Quang Vinh"],
+        ["Hà Quỳnh Hương", "Lê Minh Khôi"],
+        ["Đào Thảo Linh", "Lê Hồng Hạnh"],
+        ["Nguyễn Minh Khuê", "Trần Phạm Phương Linh"],
+        ["Huỳnh Trần Thạch Trúc", "Đỗ Như Xuân Hoàng"],
+        ["Huỳnh Trần Phúc Nguyên", "Nguyễn Tấn Tri"]
+    ];
+
+    let startDate = new Date("2024-09-16");
+    let endDate = new Date("2025-06-30");
+    let currentDate = new Date();  // Use the computer's current date
+    let schedule = [];
+
+    // Special case for September 13, 2024
+    let specialDate = new Date("2024-09-13");
+
+    // Build the schedule from the start date until the end date, skipping weekends
+    let tempDate = new Date(startDate);
+    while (tempDate <= endDate) {
+        if (tempDate.getDay() >= 1 && tempDate.getDay() <= 5) {  // Monday to Friday
+            let pair = studentPairs.shift();
+            schedule.push({
+                date: new Date(tempDate),
+                pair: pair
+            });
+            studentPairs.push(pair);  // Re-append pair to end of list
+        }
+        tempDate.setDate(tempDate.getDate() + 1);
+    }
+
+    // Function to check if two dates are the same (ignoring time)
+    function sameDay(d1, d2) {
+        return d1.getFullYear() === d2.getFullYear() &&
+               d1.getMonth() === d2.getMonth() &&
+               d1.getDate() === d2.getDate();
+    }
+
+    // Find today's duty students or check if it's a weekend
+    let todayPair = null;
+    let isWeekend = currentDate.getDay() === 6 || currentDate.getDay() === 0;  // 6 = Saturday, 0 = Sunday
+
+    // Handle special case for 13/9/2024
+    let dutyStudentsElement = document.getElementById("dutyStudents");
+    if (sameDay(currentDate, specialDate)) {
+        dutyStudentsElement.innerText = "Hôm nay thầy trực. Web này sẽ tính người trực nhật từ ngày 16/9.";
+    } else if (isWeekend) {
+        dutyStudentsElement.innerText = "Hôm nay là cuối tuần, không có ai trực.";
+    } else {
+        // Loop through the schedule to find today's pair
+        for (let entry of schedule) {
+            if (sameDay(entry.date, currentDate)) {
+                todayPair = entry.pair;
+                break;
+            }
+        }
+
+        // Update the webpage with today's cleaning duty students or a default message
+        if (todayPair) {
+            dutyStudentsElement.innerText = `${todayPair[0]} và ${todayPair[1]}`;
+        } else {
+            dutyStudentsElement.innerText = "Không có người trực hôm nay.";
+        }
+    }
+</script>
+
+</body>
+</html>
