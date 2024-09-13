@@ -37,7 +37,7 @@
             font-size: 4vmax;
         }
         h2 {
-            font-size: 6vmax;
+            font-size: 5vmax;
             color: #4CAF50;
         }
         #credit{
@@ -46,7 +46,7 @@
         }
         #face{
             width:30vw;
-            height:20vh;
+            height:15vh;
             content:url('face.jpg');
             border-radius: 10%;
         }
@@ -55,7 +55,7 @@
 <body>
 <h1 style="position:absolute;top:0; font-size:4vmax">-Lịch trực nhật-</h1>
 <h1></h1>
-<h1><a href="trucnhat_table.html" target="_blank">Xem danh sách trực nhật full tại đây</a></h1>
+<h1 style="font-size:2vmax"><a href="trucnhat_table.html" target="_blank">Xem danh sách trực nhật full tại đây</a></h1>
 <img id="face">
 <h2 id="dutyStudents">Loading...</h2>
 <p id="credit">"Chúc các bạn trực nhật nghiêm túc và đầy đủ, vui vẻ, không quạu😀" -Minh Duy lớp phó kỷ luật cảm ơn sự hợp tác của các bạn.</p>
@@ -117,9 +117,9 @@
 
     let dutyStudentsElement = document.getElementById("dutyStudents");
     if (sameDay(currentDate, specialDate)) {
-        dutyStudentsElement.innerText = "Hôm nay thầy trực. Web này sẽ tính người trực nhật từ Thứ hai ngày 16/9.";
+        dutyStudentsElement.innerText = "!Hôm nay thầy trực. Web này sẽ tính người trực nhật từ Thứ hai ngày 16/9!";
     } else if (isWeekend) {
-        dutyStudentsElement.innerText = "Hôm nay là cuối tuần, không có ai trực.";
+        dutyStudentsElement.innerText = "!Hôm nay là cuối tuần, không có ai trực!";
     } else {
         // Loop through the schedule to find today's pair
         for (let entry of schedule) {
@@ -131,9 +131,9 @@
 
         // Update the webpage with today's cleaning duty students or a default message
         if (todayPair) {
-            dutyStudentsElement.innerText = `Hôm nay bạn ${todayPair[0]} và bạn ${todayPair[1]} trực nhật nhé!`;
+            dutyStudentsElement.innerText = `!Hôm nay bạn ${todayPair[0]} và bạn ${todayPair[1]} trực nhật nhé!`;
         } else {
-            dutyStudentsElement.innerText = "Không có người trực hôm nay.";
+            dutyStudentsElement.innerText = "!Không có người trực hôm nay!";
         }
     }
 </script>
