@@ -34,10 +34,10 @@
             margin: 10px 0;
         }
         h1 {
-            font-size: 5vmax;
+            font-size: 3.5vmax;
         }
         h2 {
-            font-size: 3vmax;
+            font-size: 6vmax;
             color: #4CAF50;
         }
         #credit{
@@ -58,7 +58,7 @@
 <h1>Lịch trực nhật</h1>
 <h1></h1>
 <h2 id="dutyStudents">Loading...</h2>
-<p id="credit">"Chúc các bạn trực nhật vui vẻ, không quạu😀" -Minh Duy lớp phó kỷ luật</p>
+<p id="credit">"Chúc các bạn trực nhật nghiêm túc và đầy đủ, vui vẻ, không quạu😀" -Minh Duy lớp phó kỷ luật cảm ơn sự hợp tác của các bạn</p>
 <img id="face">
 <script>
     const dayOfWeek = ["Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu"];
@@ -135,7 +135,7 @@
 
         // Update the webpage with today's cleaning duty students or a default message
         if (todayPair) {
-            dutyStudentsElement.innerText = `${todayPair[0]} và ${todayPair[1]}`;
+            dutyStudentsElement.innerText = `${todayPair[0]} và ${todayPair[1]} trực nhật`;
         } else {
             dutyStudentsElement.innerText = "Không có người trực hôm nay.";
         }
