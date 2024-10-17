@@ -5,21 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trực nhật hôm nay</title>
     <style>
-        @keyframes fade-in{
-            0%{
-                opacity:0;
-                transform: translateY(100%);
-            }
-            100%{
-                opacity:1;
-                transform: translateY(0%);
-
-            }
-        }
+       
         body {
-            overflow:hidden;
+            overflow-x: hidden;
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background: url(background.png);
+            background-size: cover;
+            background-position: 50% 50%;
             margin: 0;
             padding: 0;
             display: flex;
@@ -27,63 +19,97 @@
             align-items: center;
             height: 100vh;
             flex-direction: column;
-            animation:1s ease-in-out fade-in;
-        }
-        h1, h2 {
-            text-align: center;
-            margin: 10px 0;
         }
         h1 {
+            text-align: center;
             font-size: 4vmax;
         }
+        h1 a {
+            font-size: 2vmax;
+            text-decoration: none;
+            color: #333;
+        }
+        .duty-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            text-align: center;
+            width: fit-content;
+        }
+        .duty-group {
+            padding: 20px;
+            backdrop-filter: blur(30px);
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
         h2 {
-            font-size: 5vmax;
+            font-size: 2.5vmax;
             color: #4CAF50;
+            margin: 0;
         }
-        #credit{
-            font-size:2.5vmax;
-            font-weight: bold;
+        .duty-title {
+            font-size: 3vmax;
+            color: #333;
+            margin-bottom: 20px;
         }
-        #face{
-            width:30vw;
-            height:15vh;
-            content:url('face.jpg');
-            border-radius: 10%;
+
+        /* Media query for mobile */
+        @media (max-width: 600px) {
+            .duty-container {
+                grid-template-columns: 1fr;
+                width: 100%;
+            }
+            h1 {
+                font-size: 6vmax;
+            }
+            h1 a {
+                font-size: 4vmax;
+            }
+            h2 {
+                font-size: 5vmax;
+            }
+            .duty-title {
+                font-size: 5vmax;
+            }
+            .duty-group {
+                padding: 30px;
+            }
         }
     </style>
 </head>
 <body>
-<h1 style="position:absolute;top:0; font-size:4vmax">-Lịch trực nhật-</h1>
-<h1></h1>
-<h1 style="font-size:2vmax"><a href="trucnhat_table.html" target="_blank">Xem danh sách trực nhật full tại đây</a></h1>
-<img id="face">
-<h2 id="dutyStudents">Loading...</h2>
-<p id="credit">"Chúc các bạn trực nhật nghiêm túc và đầy đủ, vui vẻ, không quạu😀" -Minh Duy lớp phó kỷ luật cảm ơn sự hợp tác của các bạn.</p>
+<h1><a href="trucnhat_table.html" target="_blank">Xem danh sách trực nhật full tại đây</a></h1>
+<div class="duty-container">
+    <div class="duty-group">
+        <h2 class="duty-title">Nhóm trực nhật nữ</h2>
+        <h2 id="girlDuty">Loading...</h2>
+    </div>
+    <div class="duty-group">
+        <h2 class="duty-title">Nhóm trực nhật nam</h2>
+        <h2 id="boyDuty">Loading...</h2>
+    </div>
+</div>
+
 <script>
     const dayOfWeek = ["Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu"];
-    const all_dayOfWeek=["Chủ Nhật","Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu","Thứ bảy"];
-    const studentPairs = [
+    const all_dayOfWeek = ["Chủ Nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
+    const girlGroups = [
         ["Nguyễn Minh Ánh", "Huỳnh Lê Ngân Giang"],
-        ["Ngô Anh Thư", "Đặng Minh Ngân"],
-        ["Thầy Trường", "Lại Khánh Vân Lam"],
-        ["Lê Thanh Phương", "Võ Bảo Trân"],
-        ["Trương Khắc Ngọc Thạch", "Vũ Nguyễn Trúc Quân"],
-        ["Hồ Minh Khang", "Đặng Tấn Phát"],
-        ["Nguyễn Thế Gia Huy", "Vũ Đức Huyền"],
-        ["Nguyễn Công Minh Quang", "Phan Nguyễn Đăng Khoa"],
-        ["Đinh Thiện Nhân", "Trần Hoàng Bách"],
-        ["Trịnh Tuấn Hưng", "Nguyễn Ngọc Hân"],
-        ["Nguyễn Đình Thiên Phước", "Huỳnh Phúc Quang Tuấn"],
-        ["Hoàng Chân Như", "Nguyễn Lê Minh Duy"],
-        ["Thái Quang Khang", "Nguyễn Phạm Quang Vinh"],
-        ["Hà Quỳnh Hương", "Lê Minh Khôi"],
-        ["Đào Thảo Linh", "Lê Hồng Hạnh"],
-        ["Nguyễn Minh Khuê", "Trần Phạm Phương Linh"],
-        ["Huỳnh Trần Thạch Trúc", "Đỗ Như Xuân Hoàng"],
-        ["Huỳnh Trần Phúc Nguyên", "Nguyễn Tấn Tri"]
+        ['Lê Hồng Hạnh', 'Nguyễn Ngọc Hân'],
+        ['Đỗ Như Xuân Hoàng', 'Hà Quỳnh Hương'],
+        ['Nguyễn Minh Khuê', 'Lại Khánh Vân Lam'],
+        ['Đào Thảo Linh', 'Trần Phạm Phương Linh'],
+        ['Đặng Minh Ngân', 'Hoàng Chân Như'],
+        ['Lê Thanh Phương', 'Vũ Nguyễn Trúc Quân'],
+        ['Ngô Anh Thư', 'Võ Bảo Trân \n Huỳnh Trần Thanh Trúc']
+    ];
+    const boyGroups = [
+        ['Trần Hoàng Bách', 'Nguyễn Lê Minh Duy', 'Nguyễn Thế Gia Huy', 'Trịnh Tuấn Hưng', 'Hồ Minh Khang'],
+        ['Thái Quang Khang', 'Phạm Nguyễn Đăng Khoa', 'Lê Nguyên Khôi', 'Đinh Thiện Nhân', 'Huỳnh Trần Phúc Nguyên'],
+        ['Đặng Tấn Phát', 'Nguyễn Đình Thiên Phước', 'Nguyễn Công Minh Quang', 'Nguyễn Tấn Tri', 'Huỳnh Phúc Quang Tuân \n Nguyễn Phạm Quang Vinh'],
     ];
 
-    let startDate = new Date("2024-09-16");
+    let startDate = new Date("2024-10-18");
     let endDate = new Date("2025-06-30");
     let currentDate = new Date(); 
     let schedule = [];
@@ -92,15 +118,21 @@
     let specialDate = new Date("2024-09-13");
 
     let tempDate = new Date(startDate);
-    document.querySelectorAll('h1')[1].textContent=`${all_dayOfWeek[currentDate.getDay()]},${currentDate.getDate()}/${currentDate.getMonth()+1}/${currentDate.getFullYear()}`;
+    document.querySelector('h1').textContent = `${all_dayOfWeek[currentDate.getDay()]}, ${currentDate.getDate()}/${currentDate.getMonth()+1}/${currentDate.getFullYear()}`;
+    
     while (tempDate <= endDate) {
         if (tempDate.getDay() >= 1 && tempDate.getDay() <= 5) {  // Monday to Friday
-            let pair = studentPairs.shift();
+            let girlPair = girlGroups.shift();
+            let boyGroup = boyGroups[0];  // Keep the same boy group for the week
             schedule.push({
                 date: new Date(tempDate),
-                pair: pair
+                girlPair: girlPair,
+                boyGroup: boyGroup
             });
-            studentPairs.push(pair);  // Re-append pair to end of list
+            girlGroups.push(girlPair);  // Re-append pair to end of list
+            if (tempDate.getDay() === 5) {  // Only shift boy group on Fridays
+                boyGroups.push(boyGroups.shift());
+            }
         }
         tempDate.setDate(tempDate.getDate() + 1);
     }
@@ -112,28 +144,41 @@
                d1.getDate() === d2.getDate();
     }
 
-    let todayPair = null;
+    let today_girl = null;
+    let today_boy = null;
     let isWeekend = currentDate.getDay() === 6 || currentDate.getDay() === 0;  // 6 = Saturday, 0 = Sunday
 
-    let dutyStudentsElement = document.getElementById("dutyStudents");
+    let girlDutyElement = document.getElementById("girlDuty");
+    let boyDutyElement = document.getElementById("boyDuty");
+
     if (sameDay(currentDate, specialDate)) {
-        dutyStudentsElement.innerText = "!Hôm nay thầy trực. Web này sẽ tính người trực nhật từ Thứ hai ngày 16/9!";
+        girlDutyElement.innerText = "!Hôm nay thầy trực. Web này sẽ tính người trực nhật từ Thứ hai ngày 16/9!";
+        boyDutyElement.innerText = "!Hôm nay thầy trực. Web này sẽ tính người trực nhật từ Thứ hai ngày 16/9!";
     } else if (isWeekend) {
-        dutyStudentsElement.innerText = "!Hôm nay là cuối tuần, không có ai trực!";
+        girlDutyElement.innerText = "Chúc bạn cuối tuần vui vẻ, tuần sau nhớ trực nhật đầy đủ nhé.";
+        boyDutyElement.innerText = "Chúc bạn cuối tuần vui vẻ, tuần sau nhớ trực nhật đầy đủ nhé.";
     } else {
         // Loop through the schedule to find today's pair
         for (let entry of schedule) {
             if (sameDay(entry.date, currentDate)) {
-                todayPair = entry.pair;
+                today_girl = entry.girlPair;
+                today_boy = entry.boyGroup;
                 break;
             }
         }
 
         // Update the webpage with today's cleaning duty students or a default message
-        if (todayPair) {
-            dutyStudentsElement.innerText = `!Hôm nay bạn ${todayPair[0]} và bạn ${todayPair[1]} trực nhật nhé!`;
+        if (today_girl) {
+            girlDutyElement.innerText = ` ${today_girl[0]} \n ${today_girl[1]} `;
         } else {
-            dutyStudentsElement.innerText = "!Không có người trực hôm nay!";
+            girlDutyElement.innerText = "!Không có người trực hôm nay!";
+        }
+
+        // Only show the boys' group on Fridays
+        if (currentDate.getDay() === 5 && today_boy) {
+            boyDutyElement.innerText = ` ${today_boy.join("\n ")} `;
+        } else {
+            boyDutyElement.innerText = "Nhóm trực nam chỉ trực vào thứ Sáu";
         }
     }
 </script>
